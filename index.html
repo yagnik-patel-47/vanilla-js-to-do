@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="style.css" type="text/css"/>
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap&family=Staatliches&display=swap" rel="stylesheet">
+		<link rel="icon" href="./img/favicon.png" type="image/png">
+		<title>To-Do</title>
+	</head>
+	<body>
+		<header>
+			<nav class="nav-bar">
+				<div class="ham-burger">
+					<div class="burger"></div>
+					<div class="burger"></div>
+					<div class="burger"></div>
+					<div id="side-nav" class="side-nav-hidden">
+						<ul>
+							<li id="checkToggle">Checked Task</li>
+							<li id="remainToggle">Remaining Task</li>
+							<li id="refreshBtn">Refresh</li>
+						</ul>
+					</div>
+				</div>
+				<div class="about-link">
+					<button class="page-toggle">About</button>
+				</div>
+			</nav>
+		</header>
+		<section id="logo">
+			<img src="img/logo.png" alt="Logo" />
+			<h1>Good Morning,<br/>User.</h1>
+		</section>
+		<section id="task-bar">
+			<h5 class="taskHead">To Do List</h5>
+			<div id="form">
+				<input type="text" autocomplete="false" placeholder="Add new task..." class="input-box"/>
+				<button>Add</button>
+			</div>
+			<div class="tasks"></div>
+		</section>
+		<section class="emptyTaskModal modalAnimate">
+			<p>Cannot Add Empty Task!!!</p>
+		</section>
+		<section id="social-handles">
+			<h5 class="handles-head">Social Handles </h5>
+			<div class="handles">
+				<div class="handle">
+					<img src="img/instagram.svg" alt="Instagram" />
+					<a href="https://www.instagram.com/code_addicted_2021/">Click Here...</a>
+					<img class="share" src="img/clipboard.svg" alt="Share" />
+				</div>
+				<div class="handle">
+					<img src="img/twitter.svg" alt="Instagram" />
+					<a href="https://www.twitter.com/YagnikP26385066">Click Here...</a>
+					<img class="share" src="img/clipboard.svg" alt="Share" />
+				</div> 
+				<div class="handle">
+					<img src="img/github.svg" alt="Instagram" />
+					<a href="https://github.com/CodeAddicted0">Click Here...</a>
+					<img class="share" src="img/clipboard.svg" alt="Share" />
+				</div>
+			</div>
+			<footer class="thanks-footer">
+				<p>Thanks For Testing The App.</p>
+			</footer>
+		</section>
+		<section class="checkedToDo display-none"></section>
+		<script src="main.js"></script>
+	</body>
+</html>
