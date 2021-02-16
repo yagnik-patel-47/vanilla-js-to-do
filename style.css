@@ -316,6 +316,11 @@ body {
 	background: #F2F2F2;
 }
 
+label {
+	display: flex;
+	align-items: center;
+}
+
 .input-box {
 	width: 100%;
 	outline: none;

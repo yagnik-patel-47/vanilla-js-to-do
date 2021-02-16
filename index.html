@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta charset="UTF-8">
+		<meta name="description" content="An awesome To-Do app made with JavaScript. This will also save your to-dos.">
+		<meta http-equiv="content-type" content="text/html" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="style.css" type="text/css"/>
 		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap&family=Staatliches&display=swap" rel="stylesheet">
 		<link rel="icon" href="./img/favicon.png" type="image/png">
+		<link rel="preload" as="image" href="./img/logo.png" sizes="40vw" />
 		<title>To-Do</title>
 	</head>
 	<body>
@@ -36,7 +39,9 @@
 		<section id="task-bar">
 			<h5 class="taskHead">To Do List</h5>
 			<div id="form">
-				<input type="text" autocomplete="false" placeholder="Add new task..." class="input-box"/>
+				<label>
+					<input type="text" autocomplete="false" placeholder="Add new task..." class="input-box"/>
+				</label>
 				<button>Add</button>
 			</div>
 			<div class="tasks"></div>
