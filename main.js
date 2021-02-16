@@ -155,7 +155,7 @@ remainToggle.addEventListener("click", () => {
 			checkToggle.textContent = "Checked Task";
 		}
 		const taskChilds = taskBar.children;
-		taskChilds.forEach((child) => {
+		[...taskChilds].forEach((child) => {
 			if (child.children[0].classList.contains("completed")) {
 				child.style.animation = "rightOut 1s ease-in-out 1";
 				child.addEventListener("animationend", () => {
