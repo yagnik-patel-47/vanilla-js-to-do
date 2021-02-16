@@ -93,9 +93,7 @@ const checkedMaker = (childElm) => {
 	const newChecked = needElm.cloneNode(true)
 	newChecked.children[0].style.textDecoration = "none"
 	newChecked.children[0].style.color = "#545454"
-	newChecked.children[0].style.justifySelf = "start"
 	newChecked.children[1].remove();
-	
 	newChecked.children[1].remove();
 	newChecked.classList.replace("task", "centerWork");
 	if (checkSection.firstChild.textContent === "No Checked Task") {
@@ -156,7 +154,8 @@ remainToggle.addEventListener("click", () => {
 			taskBar.classList.remove("display-none");
 			checkToggle.textContent = "Checked Task";
 		}
-		taskBar.children.forEach(child => {
+		const taskChilds = taskBar.children;
+		taskChilds.forEach((child) => {
 			if (child.children[0].classList.contains("completed")) {
 				child.style.animation = "rightOut 1s ease-in-out 1";
 				child.addEventListener("animationend", () => {
