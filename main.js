@@ -155,7 +155,7 @@ remainToggle.addEventListener("click", () => {
 			checkToggle.textContent = "Checked Task";
 		}
 		const taskChilds = taskBar.children;
-		[...taskChilds].forEach((child) => {
+		[...taskChilds].forEach(child => {
 			if (child.children[0].classList.contains("completed")) {
 				child.style.animation = "rightOut 1s ease-in-out 1";
 				child.addEventListener("animationend", () => {
@@ -175,7 +175,8 @@ remainToggle.addEventListener("click", () => {
 		})
 		document.querySelector(".taskHead").textContent = "Remaining Task";
 	} else if (remainToggle.textContent === "Remaining Task") {
-		taskBar.children.forEach(child => {
+		const taskChilds = taskBar.children;
+		[...taskChilds].forEach(child => {
 			if (child.children[0].classList.contains("completed")) {
 				child.style.display = "grid";
 				child.style.animation = "todo 1s ease-in-out 1";
