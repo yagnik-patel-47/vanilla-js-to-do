@@ -37,18 +37,10 @@ body {
 	font-size: 1.2rem;
 	animation: rightIn 1s ease-in-out 1;
 	animation-fill-mode: backward;
-	transition: all .5s ease-in-out;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	-webkit-text-stroke: none;
-}
-
-.about-link button:hover {
-	color: transparent;
-	-webkit-text-stroke: black 1px;
-	transition: all .5s ease-in-out;
 }
 
 .ham-burger {
@@ -108,6 +100,13 @@ body {
 	transition: all .7s cubic-bezier(.76,.03,.37,1.02);
 	list-style: none;
 	transform: scale(1.2);
+}
+
+#side-nav ul span {
+	position: absolute;
+	bottom: 3rem;
+	font-size: .8rem;
+	text-align: center;
 }
 
 .burger {
