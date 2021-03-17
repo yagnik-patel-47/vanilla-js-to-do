@@ -10,6 +10,7 @@ const task = document.querySelectorAll(".task");
 const checkSection = document.querySelector(".checkedToDo");
 const checkToggle = document.querySelector("#checkToggle");
 const form = document.querySelector("#form");
+const burgers = document.querySelectorAll(".burger");
 const hamBurger = document.querySelector('.ham-burger');
 const aboutSection = document.querySelector("#social-handles");
 const pageToggleBtn = document.querySelector(".page-toggle");
@@ -19,13 +20,88 @@ const refreshBtn = document.querySelector("#refreshBtn");
 
 document.addEventListener("DOMContentLoaded", getTodos);
 document.addEventListener("DOMContentLoaded", getCheckedTodos);
+document.addEventListener("DOMContentLoaded", initialAnim);
+
+const animations = {
+  leftIn: {
+    targets: "#logo img",
+    translateX: ["-3rem", 0],
+    opacity: [0, 1],
+    duration: 1500,
+    easing: "spring(1, 80, 10, 0)"
+  },
+  bottomIn: {
+    targets: ["#form", ".task"],
+    translateY: ["2rem", 0],
+    opacity: [0, 1],
+    duration: 700,
+    easing: "easeInOutExpo"
+  },
+  rightIn: {
+    targets: ".about-link button",
+    translateX: ["3rem", 0],
+    opacity: [0, 1],
+    duration: 1500,
+    easing: "spring(1, 80, 10, 0)"
+  },
+  GetRid: {
+    targets: "",
+    translateX: [0, "100%"],
+    duration: 1500,
+    easing: "spring(1, 80, 10, 0)"
+  },
+  GetIn: {
+    targets: "",
+    translateX: ["-3rem", 0],
+    opacity: [0, 1],
+    duration: 1500,
+    easing: "spring(1, 80, 10, 0)"
+  },
+  GetRidHam: {
+    targets: "",
+    translateX: [0, "-3rem"],
+    opacity: [1, 0],
+    duration: 1500,
+    easing: "spring(1, 80, 10, 0)"
+  },
+  fadeOff: {
+    targets: "",
+    opacity: [1, 0],
+    scale: [1, 0.8],
+    duration: 400,
+    easing: "easeInOutQuad"
+  },
+  fadeIn: {
+    targets: "",
+    opacity: [0, 1],
+    scale: [0.8, 1],
+    duration: 300,
+    easing: "easeInOutQuad"
+  },
+  rightOut: {
+    targets: "",
+    opacity: [1, 0],
+    translateX: [0, "3rem"],
+    duration: 600,
+    easing: "easeInOutQuad"
+  },
+  deleteFade: {
+    targets: "",
+    keyframes: [
+    {translateY: "2rem", scale: 0.8, opacity: 1},
+    {translateY: "10rem", scale: 0.8, opacity: 0}
+    ],
+    duration: 600,
+    easing: "spring(1, 80, 10, 0)"
+  }
+};
 
 function createNode(parent) {
 	const newDiv = document.createElement("div");
 	const newPara = document.createElement("p");
 	const newCheckBtn = document.createElement("img");
 	const newCloseBtn = document.createElement("img");
-	const textInfo = taskValue.value
+	const textInfo = taskValue.value;
   const newContent = document.createTextNode(textInfo);
   const firstChild = parent.firstChild;
   newDiv.classList.add("task");
@@ -46,49 +122,57 @@ function createNode(parent) {
   } else {
   	parent.insertBefore(newDiv, firstChild);
   }
+  anime(animInit(animations.bottomIn, newDiv));
+  anime({
+    targets: newDiv,
+    translateY: ["2rem", 0],
+    rotateY: [45, 0],
+    opacity: [0, 1],
+    duration: 700,
+    easing: "easeInOutExpo",
+    delay: 100
+  });
 }
 
 addBtn.addEventListener("click", () => {
   if (taskValue.value === "") {
-  	document.querySelector(".emptyTaskModal p").textContent = "Cannot Add Empty Task!!!"
-		modalSection.classList.remove("modalAnimate")
+  	document.querySelector(".emptyTaskModal p").textContent = "Cannot Add Empty Task!!!";
+		modalSection.classList.remove("modalAnimate");
 		modalSection.addEventListener("animationend", () => {
-			modalSection.classList.add("modalAnimate")
-		})
+			modalSection.classList.add("modalAnimate");
+		});
 	} else if (taskValue.value !== "") {
-		createNode(taskBar)
-  	saveLocalTodos(taskValue.value)
+		createNode(taskBar);
+  	saveLocalTodos(taskValue.value);
 	}
-  taskValue.value = ""
-})
+  taskValue.value = "";
+});
 
 taskBar.addEventListener("click", (e) => {
 	const item = e.target;
 	if (item.getAttribute("src") === "img/close.svg") {
 		const todo = item.parentElement;
 		const todoText = todo.children[0].innerText;
-		todo.classList.add("removing");
+		anime(animInit(animations.deleteFade, todo)).complete = function() {
+		  todo.remove();
+		};
 		removeLocalTodos(todoText);
 		const checkChilds = checkSection.children;
 		[...checkChilds].forEach(child => {
 			if (child.innerText === todoText) {
 				child.remove();
 			}
-		})
-		todo.addEventListener("animationend", () => {
-			todo.remove();
-		})
+		});
 		if (item.previousElementSibling.previousElementSibling.classList.contains("completed")) {
-			removeLocalTodos([todoText, "completed"])
+			removeLocalTodos([todoText, "completed"]);
 		} else {
 			removeLocalTodos([todoText]);
 		}
-		console.log("done!");
 	} else if (item.getAttribute("src") === "img/check.svg") {
 			item.previousElementSibling.classList.add("completed");
 			item.setAttribute("src", "img/redo.svg");
-			checkedMaker(item.parentElement)
-			checkLocalTodo(item.previousElementSibling.innerText)
+			checkedMaker(item.parentElement);
+			checkLocalTodo(item.previousElementSibling.innerText);
 			if (item.classList.contains("fade-in-out")) {
 				item.classList.replace("fade-in-out", "spinThat");
 			} else {
@@ -97,7 +181,7 @@ taskBar.addEventListener("click", (e) => {
 	} else if (item.getAttribute("src") === "img/redo.svg") {
 		item.previousElementSibling.classList.remove("completed");
 		item.setAttribute("src", "img/check.svg");
-		removeCheckedTodo(item.parentElement.innerText)
+		removeCheckedTodo(item.parentElement.innerText);
 		const checkChilds = checkSection.children;
 		[...checkChilds].forEach(child => {
 			if (child.innerText === item.parentElement.innerText) {
@@ -109,7 +193,7 @@ taskBar.addEventListener("click", (e) => {
 				newPara.appendChild(newContent);
   			checkSection.appendChild(newPara);
 			}
-		})
+		});
 		if (item.classList.contains("spinThat")) {
 				item.classList.replace("spinThat", "fade-in-out");
 			} else {
@@ -118,11 +202,11 @@ taskBar.addEventListener("click", (e) => {
 	}
 });
 
-const checkedMaker = (childElm) => {
+function checkedMaker(childElm) {
 	const needElm = childElm;
-	const newChecked = needElm.cloneNode(true)
-	newChecked.children[0].style.textDecoration = "none"
-	newChecked.children[0].style.color = "#545454"
+	const newChecked = needElm.cloneNode(true);
+	newChecked.children[0].style.textDecoration = "none";
+	newChecked.children[0].style.color = "#545454";
 	newChecked.children[0].classList.remove("taskText");
 	newChecked.children[1].remove();
 	newChecked.children[1].remove();
@@ -136,113 +220,115 @@ const checkedMaker = (childElm) => {
 }
 
 checkToggle.addEventListener("click", () => {
-	checkToggle.textContent === "Checked Task" ? checkToggle.textContent = "Add Task" : checkToggle.textContent = "Checked Task"
-	document.querySelector("#task-bar h5").textContent === "To Do List" || "Remaining Task" ? document.querySelector("#task-bar h5").textContent = "Checked To Do" : document.querySelector("#task-bar h5").textContent = "To Do List"
-	
-	document.querySelector(".taskHead").style.display = "none"
-	setTimeout(function() {
-		document.querySelector(".taskHead").style.display = "initial"
-	}, 1);
-	taskBar.classList.toggle("display-none")
-	if (taskBar.classList.contains("display-none")) {
-		form.style.display = "none"
-	} else if (!taskBar.classList.contains("display-none")) {
-		form.style.display = "grid"
+	checkToggle.textContent === "Checked Task" ? checkToggle.textContent = "Add Task" : checkToggle.textContent = "Checked Task";
+	document.querySelector(".taskHead").textContent === ("To Do List" || "Remaining Task") ? document.querySelector(".taskHead").textContent = "Checked To Do" : document.querySelector(".taskHead").textContent = "To Do List";
+	document.querySelector("#side-nav").classList.remove("side-nav-showed");
+	burgers[1].classList.toggle("middle-rem");
+	burgers[0].classList.toggle("top-bur");
+	burgers[2].classList.toggle("bottom-bur");
+
+	if (getComputedStyle(checkSection).display === "block") {
+	  //Check Active
+	  anime(animInit(animations.fadeOff, checkSection)).complete = () => {
+	    taskBar.classList.toggle("display-none");
+	    form.style.display = "grid";
+	    checkSection.classList.toggle("display-none");
+	    anime(animInit(animations.fadeIn, [taskBar, form]));
+	  };
+	} else if (getComputedStyle(checkSection).display === "none") {
+	  // Task Active
+	  anime(animInit(animations.fadeOff, [taskBar, form])).complete = () => {
+	    form.style.display = "none";
+	    checkSection.classList.toggle("display-none");
+	    taskBar.classList.toggle("display-none");
+	    anime(animInit(animations.fadeIn, checkSection));
+	  };
 	}
-	checkSection.classList.toggle("display-none");
+	anime(animInit(animations.leftIn, ".taskHead"));
 	if (remainToggle.textContent === "Add Task") {
-		remainToggle.textContent = "Remaining Task"
+		remainToggle.textContent = "Remaining Task";
 	}
 	if (remainToggle.textContent === "Remaining Task") {
 		if (!taskBar.classList.contains("display-none")) {
 			[...taskBar.children].forEach(child => {
 				if (child.children[0].classList.contains("completed")){
 					if (child.style.display === "none") {
-						document.querySelector(".taskHead").textContent = "To Do List"
+						document.querySelector(".taskHead").textContent = "Checked To Do"; 
 						form.style.display = "grid";
-						form.style.animation = "rightIn 1s ease-in-out 1"
 						child.style.display = "grid";
-						child.style.animation = "todo 1s ease-in-out 1";
-						child.addEventListener("animationend", () => {
-							child.style.display = "grid";
-						})
-						form.addEventListener("animationend", () => {
-							form.style.display = "grid";
-						})
+						anime(animInit(animations.fadeIn, child));
 					}
 				}
-			})
+			});
 		}
 	}
-})
+});
 
 remainToggle.addEventListener("click", () => {
 	remainToggle.textContent === "Remaining Task" ? remainToggle.textContent = "Add Task" : remainToggle.textContent = "Remaining Task";
+	document.querySelector("#side-nav").classList.remove("side-nav-showed");
+	burgers[1].classList.toggle("middle-rem");
+	burgers[0].classList.toggle("top-bur");
+	burgers[2].classList.toggle("bottom-bur");
+	anime(animInit(animations.leftIn, ".taskHead"));
 	
 	if (remainToggle.textContent === "Add Task") {
 		if (!checkSection.classList.contains("display-none")) {
-			checkSection.classList.add("display-none")
-			taskBar.classList.remove("display-none");
-			checkToggle.textContent = "Checked Task";
+		  anime(animInit(animations.fadeOff, checkSection)).complete = function() {
+        checkSection.classList.add("display-none");
+        taskBar.classList.remove("display-none");
+        form.style.display = "grid";
+        checkToggle.textContent = "Checked Task";
+        anime(animInit(animations.fadeIn, taskBar));
+        anime(animInit(animations.fadeIn, form));
+		  };
 		}
+		anime(animInit(animations.fadeOff, form)).complete = function() {
+		  form.style.display = "none";
+		};
 		const taskChilds = taskBar.children;
 		[...taskChilds].forEach(child => {
 			if (child.children[0].classList.contains("completed")) {
-				child.style.animation = "rightOut 1s ease-in-out 1";
-				child.addEventListener("animationend", () => {
-					child.style.display = "none";
-				})
+				anime(animInit(animations.fadeOff, child)).complete = function() {
+    		  child.style.display = "none";
+    		};
 			} else if (!child.children[0].classList.contains("completed")) {
-				child.style.display = "none";
-				setTimeout(function() {
-					child.style.animation = "rightIn 1s ease-in-out 1"
-					child.style.display = "grid";
-				}, 10);
+				anime(animInit(animations.fadeIn, child, 400));
 				child.addEventListener("click", (e) => {
 					const targetE = e.target;
 					if (targetE.classList.contains("checked")){
-						child.style.animation = "leftOut 1s ease-in-out 1"
-						child.addEventListener("animationend", () => {
-							child.style.display = "none"
-						})
+					  if (remainToggle.textContent === "Add Task") {
+					    anime(animInit(animations.rightOut, child)).complete = function() {
+  					    child.style.display = "none";
+  					    anime({
+  					      targets: child,
+  					      translateX: 0,
+  					      duration: 0
+  					    });
+  					  };
+					  }
 					}
-				})
+				});
 			}
-		})
-		form.style.animation = "leftOut 1s ease-in-out 1";
-		form.addEventListener("animationend", () => {
-			form.style.display = "none";
-		})
+		});
 		document.querySelector(".taskHead").textContent = "Remaining Task";
 	} else if (remainToggle.textContent === "Remaining Task") {
 		const taskChilds = taskBar.children;
 		[...taskChilds].forEach(child => {
-			if (child.children[0].classList.contains("completed")) {
-				child.style.display = "grid";
-				child.style.animation = "todo 1s ease-in-out 1";
-				child.addEventListener("animationend", () => {
-					child.style.display = "grid";
-				})
-			} else if (!child.children[0].classList.contains("completed")) {
-				child.style.display = "none";
-				setTimeout(function() {
-					child.style.animation = "todo 1s ease-in-out 1"
-					child.style.display = "grid";
-				}, 10);
-			}
-		})
+		  anime(animInit(animations.fadeOff, child)).complete = function () {
+		    child.style.display = "grid";
+		    form.style.display = "grid";
+		    anime(animInit(animations.fadeIn, child));
+		  };
+		});
+		anime(animInit(animations.fadeIn, form, 400));
 		document.querySelector(".taskHead").textContent = "To Do List";
-		form.style.display = "grid";
-		form.style.animation = "todo 1s ease-in-out 1";
-		form.addEventListener("animationend", () => {
-			form.style.display = "grid";
-		})
 	}
-})
+});
 
 refreshBtn.addEventListener("click", () => {
 	location.reload();
-})
+});
 
 if (!checkSection.hasChildNodes()) {
 	const newPara = document.createElement("p");
@@ -256,57 +342,68 @@ checkToggle.addEventListener("click", () => {
 	const newPara = document.createElement("p");
   const newContent = document.createTextNode("No Checked Task");
   newPara.appendChild(newContent);
-	checkSection.appendChild(newPara)
+	checkSection.appendChild(newPara);
 	}
-})
+});
 
 hamBurger.addEventListener("click", () => {
-	document.querySelector("#side-nav").classList.toggle("side-nav-showed")
-})
+	document.querySelector("#side-nav").classList.toggle("side-nav-showed");
+	burgers[1].classList.toggle("middle-rem");
+	burgers[0].classList.toggle("top-bur");
+	burgers[2].classList.toggle("bottom-bur");
+});
 
-document.querySelector("#logo").addEventListener("click", () => {
-	if (document.querySelector("#side-nav").classList.contains("side-nav-showed")) {
-		document.querySelector("#side-nav").classList.remove("side-nav-showed")
-	}
-})
-
-document.querySelector("#task-bar").addEventListener("click", () => {
-	if (document.querySelector("#side-nav").classList.contains("side-nav-showed")) {
-		document.querySelector("#side-nav").classList.remove("side-nav-showed")
-	}
-})
-
-pageToggleBtn.addEventListener("click", togglePage)
+pageToggleBtn.addEventListener("click", togglePage);
 
 function togglePage() {
-	const logoH1 = document.querySelector("#logo h1")
 	if (aboutSection.style.display === "" || aboutSection.style.display === "none") {
-		document.querySelector("#task-bar").style.display = "none";
-		logoH1.style.display = "none";
-		setTimeout(function() {
-			logoH1.style.display = "initial";
-		}, 10);
-		aboutSection.style.display = "flex"
-		hamBurger.style.display = "none"
-		document.querySelector("nav").style.justifyContent = "flex-end"
-		pageToggleBtn.textContent = "App"
-		logoH1.innerHTML = `Developed By,<br />Yagnik Patel.`
+	  document.querySelector(".developerHead").style.visibility = "visible";
+		pageToggleBtn.textContent = "App";
+		anime(animInit(animations.GetIn, ".developerHead"));
+		anime(animInit(animations.GetRid, ".userHead"));
+		anime(animInit(animations.GetRidHam, ".ham-burger"));
+		anime({
+		  targets: "#task-bar",
+      opacity: [1, 0],
+      scale: [1, 0.8],
+      duration: 500,
+      easing: "easeInOutQuad",
+      complete: function() {
+        aboutSection.style.display = "flex";
+        document.querySelector("#task-bar").style.display = "none";
+        anime(animInit(animations.fadeIn, "#social-handles"));
+        anime(animInit(animations.bottomIn, ".handle", anime.stagger(200)));
+		    anime(animInit(animations.leftIn, ".handles-head"), 150);
+		    anime(animInit(animations.bottomIn, ".thanks-footer"), 150);
+      }
+		}); 
 		if (document.querySelector("#side-nav").classList.contains("side-nav-showed")) {
 			document.querySelector("#side-nav").classList.remove("side-nav-showed");
+			burgers[1].classList.remove("middle-rem");
+	    burgers[0].classList.remove("top-bur");
+	    burgers[2].classList.remove("bottom-bur");
 		}
 	} else if (aboutSection.style.display === "flex") {
-		document.querySelector("#task-bar").style.display = "flex";
-		logoH1.style.display = "none";
-		setTimeout(function() {
-			logoH1.style.display = "initial";
-		}, 10);
-		aboutSection.style.display = "none";
-		hamBurger.style.display = "block";
-		document.querySelector("nav").style.justifyContent = "space-between";
 		pageToggleBtn.textContent = "About";
-		logoH1.innerHTML = `Good Morning,<br />User.`;
+		anime({
+		  targets: "#social-handles",
+      opacity: [1, 0],
+      scale: [1, 0.8],
+      duration: 500,
+      easing: "easeInOutQuad",
+      complete: function() {
+        aboutSection.style.display = "none";
+        document.querySelector("#task-bar").style.display = "flex";
+        anime(animInit(animations.fadeIn, "#task-bar"));
+        anime(animInit(animations.leftIn, ".taskHead"), 150);
+		    anime(animInit(animations.bottomIn, ["#form", ".task"], anime.stagger(200)));
+      }
+		});
+		anime(animInit(animations.GetRid, ".developerHead"));
+		anime(animInit(animations.GetIn, ".userHead"));
+		anime(animInit(animations.GetIn, ".ham-burger"));
 	}
-} 
+}
 
 [...clipBoard].forEach(clipboard => {
 	clipboard.addEventListener("click", (e) => {
@@ -334,12 +431,12 @@ function saveLocalTodos(todo) {
 	if (localStorage.getItem("todosMadeByYagnik") === null) {
 		todos = [];
 	} else {
-		todos = JSON.parse(localStorage.getItem("todosMadeByYagnik")) 
+		todos = JSON.parse(localStorage.getItem("todosMadeByYagnik"));
 	}
 	
-	let needTodo = [todo]
-	todos.push(needTodo)
-	localStorage.setItem("todosMadeByYagnik", JSON.stringify(todos))
+	let needTodo = [todo];
+	todos.push(needTodo);
+	localStorage.setItem("todosMadeByYagnik", JSON.stringify(todos));
 }
 
 function getTodos() {
@@ -393,11 +490,11 @@ function removeLocalTodos(todo) {
 	if (localStorage.getItem("todosMadeByYagnik") === null) {
 		todos = [];
 	} else {
-		todos = JSON.parse(localStorage.getItem("todosMadeByYagnik")) 
+		todos = JSON.parse(localStorage.getItem("todosMadeByYagnik"));
 	}
 	
-	todos.splice(todos.indexOf(todo), 1)
-	localStorage.setItem("todosMadeByYagnik", JSON.stringify(todos))
+	todos.splice(todos.indexOf(todo), 1);
+	localStorage.setItem("todosMadeByYagnik", JSON.stringify(todos));
 }
 
 function checkLocalTodo(todo) {
@@ -409,13 +506,13 @@ function checkLocalTodo(todo) {
 			if (task === todo) {
 				need = task;
 			}
-		})
+		});
 		if (eachTodo[0] === need) {
-			index = todos.indexOf(eachTodo)
-			todos.splice(index, 1, [todo, "completed"])
+			index = todos.indexOf(eachTodo);
+			todos.splice(index, 1, [todo, "completed"]);
 			localStorage.setItem("todosMadeByYagnik", JSON.stringify(todos));
 		}
-	})
+	});
 }
 
 function getCheckedTodos() {
@@ -423,7 +520,7 @@ function getCheckedTodos() {
 	if (localStorage.getItem("todosMadeByYagnik") === null) {
 		todos = [];
 	} else {
-		todos = JSON.parse(localStorage.getItem("todosMadeByYagnik")) 
+		todos = JSON.parse(localStorage.getItem("todosMadeByYagnik"));
 	}
 	
 	let checkedTodo;
@@ -464,4 +561,22 @@ function removeCheckedTodo(todo) {
 			}
 		}
 	});
+}
+
+function animInit(obj, targetTags, Animdelay=0) {
+  let animObj = obj;
+  animObj.targets = targetTags;
+  animObj.delay = Animdelay;
+  return animObj;
+}
+
+function initialAnim() {
+  anime(animInit(animations.leftIn, "#logo img"));
+  anime(animInit(animations.leftIn, ".taskHead"));
+  anime(animInit(animations.leftIn, ".ham-burger"));
+  anime(animInit(animations.rightIn, ".page-toggle"));
+  anime(animInit(animations.rightIn, "#logo h1"));
+  setTimeout(function() {
+    anime(animInit(animations.bottomIn, ["#form", '.task'], anime.stagger(200)));
+  }, 0);
 }

@@ -24,6 +24,8 @@ body {
 	align-items: flex-end;
 	padding: 0 2rem;
 	justify-content: space-between;
+	position: relative;
+	z-index: 10;
 }
 
 .about-link button {
@@ -35,8 +37,6 @@ body {
 	text-decoration: none;
 	font-weight: bold;
 	font-size: 1.2rem;
-	animation: rightIn 1s ease-in-out 1;
-	animation-fill-mode: backward;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
@@ -45,9 +45,7 @@ body {
 
 .ham-burger {
 	display: block;
-	animation: leftIn 1s ease-in-out 1;
-	animation-fill-mode: backward;
-	z-index: 7;
+	position: relative;
 }
 
 .side-nav-hidden {
@@ -61,7 +59,6 @@ body {
 	width: 60vw;
 	min-height: 100%;
 	transform: translateX(-80vw);
-	transition: all .7s cubic-bezier(.76,.03,.37,1.02);
 	z-index: 5;
 	background: rgba( 255, 255, 255, 0.2 );
 	box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
@@ -71,11 +68,11 @@ body {
 	border: 2px solid rgba( 255, 255, 255, 0.18 );
 	border-top-right-radius: 1.2rem;
 	border-bottom-right-radius: 1.2rem;
+	transition: 0.4s ease-in-out;
 }
 
 .side-nav-showed {
-	transform: translateX(0);
-	transition: all .7s cubic-bezier(.76,.03,.37,1.02);
+  transform: translateX(0);
 }
 
 #side-nav ul {
@@ -86,7 +83,6 @@ body {
 
 #side-nav ul li {
 	color: #222;
-	-webkit-text-stroke: none;
 	transition: all .7s cubic-bezier(.76,.03,.37,1.02);
 	list-style: none;
 	font-size: 1.3rem;
@@ -97,19 +93,15 @@ body {
 	user-select: none;
 }
 
-#side-nav ul li:hover {
-	color: transparent;
-	-webkit-text-stroke: black 1px;
-	transition: all .7s cubic-bezier(.76,.03,.37,1.02);
-	list-style: none;
-	transform: scale(1.2);
-}
-
-#side-nav ul span {
+#side-nav .forRecovery {
 	position: absolute;
 	bottom: 3rem;
-	font-size: .8rem;
-	text-align: center;
+	padding-left: 0.4rem;
+}
+
+.forRecovery p {
+  margin: 0.4rem 0;
+  font-size: 0.8rem;
 }
 
 .burger {
@@ -119,6 +111,57 @@ body {
 	background-color: #0d47a1;
 	margin: .4rem 0;
 	border-radius: 5px;
+	-webkit-transition: .25s ease-in-out;
+  -moz-transition: .25s ease-in-out;
+  -o-transition: .25s ease-in-out;
+  transition: .25s ease-in-out;
+}
+
+.burger:nth-child(1) {
+	transform-origin: left top;
+}
+
+.burger:nth-child(3) {
+	transform-origin: left bottom;
+}
+
+.middle-rem {
+	opacity: 0;
+  webkit-transform: translateX(-2rem);
+  -moz-transform: translateX(-2rem);
+  -o-transform: translateX(-2rem);
+  transform: translateX(-2rem);
+}
+
+.top-bur {
+  -webkit-transform: rotate(40deg);
+  -moz-transform: rotate(40deg);
+  -o-transform: rotate(40deg);
+  transform: rotate(40deg);
+}
+
+.bottom-bur {
+  -webkit-transform: rotate(-40deg);
+  -moz-transform: rotate(-40deg);
+  -o-transform: rotate(-40deg);
+  transform: rotate(-40deg);
+}
+
+.mainHead {
+  display: grid; 
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  overflow: hidden; 
+  width: fit-content;
+}
+
+.mainHead h1 {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.mainHead h1:nth-child(2) {
+  visibility: hidden;
 }
 
 #logo {
@@ -126,13 +169,12 @@ body {
 	flex-direction: column;
 	align-items: center;
 	margin-top: 1rem;
+	position: relative;
 }
 
 #logo img {
 	width: 40vw;
 	height: auto;
-	animation: leftIn 1s ease-in-out 1;
-	animation-fill-mode: backward;
 }
 
 #logo h1 {
@@ -140,11 +182,8 @@ body {
 	text-transform: uppercase;
 	font-family: var(--staatliches);
 	letter-spacing: 2px;
-	text-align: center;
-	margin-top: 1rem;
-	animation: rightIn 1s ease-in-out 1;
-	animation-fill-mode: backward;
 	color: #333;
+	text-align: center;
 }
 
 #task-bar {
@@ -158,8 +197,6 @@ body {
 	margin: 1rem 0;
 	text-transform: uppercase;
 	font-size: .8rem;
-	animation: leftIn 1s ease-in-out 1;
-	animation-fill-mode: backward;
 }
 
 .task {
@@ -171,8 +208,6 @@ body {
 	align-items: center;
 	margin-bottom: .8rem;
 	padding-left: 1.5rem;
-	animation: todo 1s ease-in-out 1;
-	animation-fill-mode: backward;
 }
 
 .centerWork {
@@ -183,78 +218,6 @@ body {
 	grid-template-columns: 1fr;
 	place-items: center;
 	margin-bottom: .8rem;
-	animation: todo 1s ease-in-out 1;
-	animation-fill-mode: backward;
-}
-
-@keyframes todo {
-	0% {
-		transform: translateY(3rem);
-		opacity: 0;
-	}
-	100% {
-		transform: translateY(0);
-		opacity: 1;
-	}
-}
-
-@keyframes topIn {
-	0% {
-		transform: translateY(-3rem);
-		opacity: 0;
-	}
-	100% {
-		transform: translateY(0);
-		opacity: 1;
-	}
-}
-
-@keyframes leftIn {
-	0% {
-		transform: translateX(-3rem);
-		opacity: 0;
-	}
-	100% {
-		transform: translateX(0);
-		opacity: 1;
-	}
-}
-
-@keyframes rightIn {
-	0% {
-		transform: translateX(3rem);
-		opacity: 0;
-	}
-	100% {
-		transform: translateX(0);
-		opacity: 1;
-	}
-}
-
-@keyframes rightOut {
-	0% {
-		transform: translateX(0);
-		opacity: 1;
-	}
-	100% {
-		transform: translateX(3rem);
-		opacity: 0;
-	}
-}
-
-@keyframes leftOut {
-	0% {
-		transform: translateX(0);
-		opacity: 1;
-	}
-	100% {
-		transform: translateX(-3rem);
-		opacity: 0;
-	}
-}
-
-.spinThat {
-	animation: spin 0.5s ease 1;
 }
 
 @keyframes spin {
@@ -321,19 +284,17 @@ body {
 	width: 1.5rem;
 }
 
-#form {
+.formStyle {
 	grid-template-columns: 4fr 1fr;
 	border: .2rem solid #F2F2F2;
 	display: grid;
 	border-radius: .7rem;
 	padding: .5rem 1rem;
 	margin-bottom: 2rem;
-	animation: todo 1s ease-in-out 1;
-	animation-fill-mode: backward;
 	background: white;
 }
 
-#form button {
+.formStyle button {
 	outline: none;
 	border: .2rem solid #F2F2F2;
 	border-radius: .7rem;
@@ -344,7 +305,7 @@ body {
 	color: #545454;
 }
 
-#form button:hover {
+.formStyle button:hover {
 	background: #F2F2F2;
 }
 
@@ -428,13 +389,13 @@ label {
 	}
 }
 
-.checkedToDo {
-	padding: 0 1.8rem;
+.opHidden {
+  visibility: hidden;
+  pointer-events: none;
 }
 
-.checkedToDo > p {
-	animation: leftIn 1s ease-in-out 1;
-	animation-fill-mode: backward;
+.checkedToDo {
+	padding: 0 1.8rem;
 }
 
 .removing {
@@ -471,8 +432,6 @@ label {
 	margin: 2rem 0;
 	text-transform: uppercase;
 	font-size: .8rem;
-	animation: leftIn 1s ease-in-out 1;
-	animation-fill-mode: backward;
 }
 
 .handle {
@@ -480,9 +439,7 @@ label {
 	display: grid;
 	grid-template-columns: 1fr 3fr 1fr;
 	place-items: center;
-	margin-bottom: 1.4rem; 
-	animation: todo 1s ease-in-out 1;
-	animation-fill-mode: backward;
+	margin-bottom: 1.4rem;
 }
 
 .handle a {
@@ -517,8 +474,6 @@ label {
 	justify-content: center;
 	width: 100%;
 	margin: 2rem 0;
-	animation: todo 1s ease-in-out 1;
-	animation-fill-mode: backward;
 }
 
 .thanks-footer p {
