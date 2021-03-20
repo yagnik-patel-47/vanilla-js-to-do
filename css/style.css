@@ -241,6 +241,10 @@ body {
 	animation: spinReverse 0.5s ease 1;
 }
 
+.spinThat {
+  animation: spin 0.5s ease 1;
+}
+
 @keyframes spinReverse {
 	0% {
 		transform: rotateZ(0);

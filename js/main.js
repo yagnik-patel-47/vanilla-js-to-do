@@ -18,6 +18,12 @@ const clipBoard = document.querySelectorAll(".share");
 const remainToggle = document.querySelector("#remainToggle");
 const refreshBtn = document.querySelector("#refreshBtn");
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw_app.js");
+  }); 
+}
+
 document.addEventListener("DOMContentLoaded", getTodos);
 document.addEventListener("DOMContentLoaded", getCheckedTodos);
 document.addEventListener("DOMContentLoaded", initialAnim);
@@ -265,6 +271,7 @@ checkToggle.addEventListener("click", () => {
 });
 
 remainToggle.addEventListener("click", () => {
+  let toDefCounter = 0;
 	remainToggle.textContent === "Remaining Task" ? remainToggle.textContent = "Add Task" : remainToggle.textContent = "Remaining Task";
 	document.querySelector("#side-nav").classList.remove("side-nav-showed");
 	burgers[1].classList.toggle("middle-rem");
@@ -293,6 +300,7 @@ remainToggle.addEventListener("click", () => {
     		  child.style.display = "none";
     		};
 			} else if (!child.children[0].classList.contains("completed")) {
+			  toDefCounter++;
 				anime(animInit(animations.fadeIn, child, 400));
 				child.addEventListener("click", (e) => {
 					const targetE = e.target;
@@ -317,11 +325,11 @@ remainToggle.addEventListener("click", () => {
 		[...taskChilds].forEach(child => {
 		  anime(animInit(animations.fadeOff, child)).complete = function () {
 		    child.style.display = "grid";
-		    form.style.display = "grid";
 		    anime(animInit(animations.fadeIn, child));
 		  };
 		});
-		anime(animInit(animations.fadeIn, form, 400));
+		form.style.display = "grid";
+		anime(animInit(animations.fadeIn, form, 400)); 
 		document.querySelector(".taskHead").textContent = "To Do List";
 	}
 });
