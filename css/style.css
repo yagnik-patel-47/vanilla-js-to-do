@@ -331,8 +331,6 @@ label {
 }
 
 .emptyTaskModal {
-	animation: modal 2.5s ease 1;
-	animation-fill-mode: backward;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -341,11 +339,11 @@ label {
 	width: 100%;
 	left: 0;
 	top: 0;
+	bottom: 0;
 	z-index: 10;
-}
-
-.modalAnimate {
-	display: none;
+	backdrop-filter: blur(2px) brightness(0.8);
+	-webkit-backdrop-filter: blur(2px) brightness(0.8);
+	transition: 0.4s ease-in-out;
 }
 
 .emptyTaskModal p {
@@ -360,42 +358,10 @@ label {
 	color: white;
 }
 
-@keyframes modal {
-	0% {
-		display: flex;
-		transform: translateY(-10%);
-		opacity: 0;
-		visibility: hidden;
-		transform: translateY(-2rem);
-		pointer-events: none;
-		backdrop-filter: blur(0) brightness(1);
-	}
-	20% {
-		backdrop-filter: blur(2px) brightness(0.8);
-	}
-	40% {
-		transform: translateY(0);
-	}
-	80% {
-		opacity: 1;
-		visibility: visible;
-		pointer-events: all;
-		backdrop-filter: blur(2px) brightness(0.8);
-		transform: translateY(0);
-	}
-	100% {
-		display: none;
-		opacity: 0;
-		visibility: hidden;
-		pointer-events: none;
-		backdrop-filter: blur(0) brightness(1);
-		transform: translateY(-2rem);
-	}
-}
-
 .opHidden {
   visibility: hidden;
   pointer-events: none;
+  opacity: 0;
 }
 
 .checkedToDo {

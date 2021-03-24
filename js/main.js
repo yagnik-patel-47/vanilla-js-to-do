@@ -20,7 +20,7 @@ const refreshBtn = document.querySelector("#refreshBtn");
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw_app.js");
+    navigator.serviceWorker.register("./js/sw_app.js");
   }); 
 }
 
@@ -99,6 +99,15 @@ const animations = {
     ],
     duration: 600,
     easing: "spring(1, 80, 10, 0)"
+  },
+  modalIn: {
+    targets: "",
+    keyframes: [
+      {translateY: "-2rem", opacity: 0},
+      {translateY: 0, opacity: 1}
+    ],
+    duration: 800,
+    easing: "spring(1, 80, 10, 0)"
   }
 };
 
@@ -143,10 +152,27 @@ function createNode(parent) {
 addBtn.addEventListener("click", () => {
   if (taskValue.value === "") {
   	document.querySelector(".emptyTaskModal p").textContent = "Cannot Add Empty Task!!!";
-		modalSection.classList.remove("modalAnimate");
-		modalSection.addEventListener("animationend", () => {
-			modalSection.classList.add("modalAnimate");
+		modalSection.classList.remove("opHidden");
+		anime({
+		  targets: ".emptyTaskModal p",
+		  opacity: 0,
+		  duration: 0
 		});
+		anime(animInit(animations.modalIn,".emptyTaskModal p")).complete = function() {
+		  setTimeout(function() {
+		    anime({
+		      targets: ".emptyTaskModal p",
+		      duration: 500,
+		      keyframes: [
+          {translateY: 0, opacity: 1},
+          {translateY: "-2rem", opacity: 0}
+        ],
+        easing: "spring(1, 80, 10, 0)"
+    		}).complete = function() {
+    		  modalSection.classList.add("opHidden");
+    		};
+		  }, 1000);
+		};
 	} else if (taskValue.value !== "") {
 		createNode(taskBar);
   	saveLocalTodos(taskValue.value);
@@ -416,10 +442,27 @@ function togglePage() {
 [...clipBoard].forEach(clipboard => {
 	clipboard.addEventListener("click", (e) => {
 		document.querySelector(".emptyTaskModal p").textContent = "Copied To Clipboard!";
-		modalSection.classList.remove("modalAnimate");
-		modalSection.addEventListener("animationend", () => {
-			modalSection.classList.add("modalAnimate");
+		modalSection.classList.remove("opHidden");
+		anime({
+		  targets: ".emptyTaskModal p",
+		  opacity: 0,
+		  duration: 0
 		});
+		anime(animInit(animations.modalIn,".emptyTaskModal p")).complete = function() {
+		  setTimeout(function() {
+		    anime({
+		      targets: ".emptyTaskModal p",
+		      duration: 500,
+		      keyframes: [
+          {translateY: 0, opacity: 1},
+          {translateY: "-2rem", opacity: 0}
+        ],
+        easing: "spring(1, 80, 10, 0)"
+    		}).complete = function() {
+    		  modalSection.classList.add("opHidden");
+    		};
+		  }, 1000);
+		};
 		const needLink = e.target.previousElementSibling.getAttribute("href");
 		const textarea = document.createElement("textarea");
 		const textareaChild = document.createTextNode(needLink);
