@@ -1,5 +1,4 @@
 "use strict";
-
 const checkBtn = document.querySelectorAll(".checked");
 const removeBtn = document.querySelectorAll(".removed");
 const taskBar = document.querySelector(".tasks");
@@ -17,21 +16,15 @@ const pageToggleBtn = document.querySelector(".page-toggle");
 const clipBoard = document.querySelectorAll(".share");
 const remainToggle = document.querySelector("#remainToggle");
 const refreshBtn = document.querySelector("#refreshBtn");
-
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./js/sw_app.js");
-<<<<<<< HEAD
-  }); 
-=======
+    navigator.serviceWorker.register("/sw_app.js");
   });
->>>>>>> be53783547cdff276a595c9287958dc9e9afc003
 }
 
 document.addEventListener("DOMContentLoaded", getTodos);
 document.addEventListener("DOMContentLoaded", getCheckedTodos);
 document.addEventListener("DOMContentLoaded", initialAnim);
-
 const animations = {
   leftIn: {
     targets: "#logo img",
@@ -102,24 +95,18 @@ const animations = {
       { translateY: "10rem", scale: 0.8, opacity: 0 },
     ],
     duration: 600,
-<<<<<<< HEAD
-    easing: "spring(1, 80, 10, 0)"
+    easing: "spring(1, 80, 10, 0)",
   },
   modalIn: {
     targets: "",
     keyframes: [
-      {translateY: "-2rem", opacity: 0},
-      {translateY: 0, opacity: 1}
+      { translateY: "-2rem", opacity: 0 },
+      { translateY: 0, opacity: 1 },
     ],
     duration: 800,
-    easing: "spring(1, 80, 10, 0)"
-  }
-=======
     easing: "spring(1, 80, 10, 0)",
   },
->>>>>>> be53783547cdff276a595c9287958dc9e9afc003
 };
-
 function createNode(parent) {
   const newDiv = document.createElement("div");
   const newPara = document.createElement("p");
@@ -136,7 +123,6 @@ function createNode(parent) {
   newCheckBtn.setAttribute("src", "img/check.svg");
   newCloseBtn.setAttribute("src", "img/close.svg");
   newPara.classList.add("taskText");
-
   newPara.appendChild(newContent);
   newDiv.appendChild(newPara);
   newDiv.appendChild(newCheckBtn);
@@ -157,63 +143,53 @@ function createNode(parent) {
     delay: 100,
   });
 }
-
 addBtn.addEventListener("click", () => {
   if (taskValue.value === "") {
-<<<<<<< HEAD
-  	document.querySelector(".emptyTaskModal p").textContent = "Cannot Add Empty Task!!!";
-		modalSection.classList.remove("opHidden");
-		anime({
-		  targets: ".emptyTaskModal p",
-		  opacity: 0,
-		  duration: 0
-		});
-		anime(animInit(animations.modalIn,".emptyTaskModal p")).complete = function() {
-		  setTimeout(function() {
-		    anime({
-		      targets: ".emptyTaskModal p",
-		      duration: 500,
-		      keyframes: [
-          {translateY: 0, opacity: 1},
-          {translateY: "-2rem", opacity: 0}
-        ],
-        easing: "spring(1, 80, 10, 0)"
-    		}).complete = function() {
-    		  modalSection.classList.add("opHidden");
-    		};
-		  }, 1000);
-		};
-	} else if (taskValue.value !== "") {
-		createNode(taskBar);
-  	saveLocalTodos(taskValue.value);
-	}
-=======
     document.querySelector(".emptyTaskModal p").textContent =
       "Cannot Add Empty Task!!!";
-    modalSection.classList.remove("modalAnimate");
-    modalSection.addEventListener("animationend", () => {
-      modalSection.classList.add("modalAnimate");
+    modalSection.classList.remove("opHidden");
+    anime({
+      targets: ".emptyTaskModal p",
+      opacity: 0,
+      duration: 0,
     });
+    anime(
+      animInit(animations.modalIn, ".emptyTaskModal p")
+    ).complete = function () {
+      setTimeout(function () {
+        anime({
+          targets: ".emptyTaskModal p",
+          duration: 500,
+          keyframes: [
+            { translateY: 0, opacity: 1 },
+            { translateY: "-2rem", opacity: 0 },
+          ],
+          easing: "spring(1, 80, 10, 0)",
+        }).complete = function () {
+          modalSection.classList.add("opHidden");
+        };
+      }, 1000);
+    };
   } else if (taskValue.value !== "") {
     createNode(taskBar);
     saveLocalTodos(taskValue.value);
   }
->>>>>>> be53783547cdff276a595c9287958dc9e9afc003
   taskValue.value = "";
 });
-
 taskBar.addEventListener("click", (e) => {
   const item = e.target;
   if (item.getAttribute("src") === "img/close.svg") {
     const todo = item.parentElement;
-    const todoText = todo.children[0].innerText;
+    const todoPara = todo.children[0];
+    const todoText = todoPara.innerText;
     anime(animInit(animations.deleteFade, todo)).complete = function () {
       todo.remove();
     };
     removeLocalTodos(todoText);
     const checkChilds = checkSection.children;
     [...checkChilds].forEach((child) => {
-      if (child.innerText === todoText) {
+      let needChild = child;
+      if (needChild.innerText === todoText) {
         child.remove();
       }
     });
@@ -229,8 +205,9 @@ taskBar.addEventListener("click", (e) => {
   } else if (item.getAttribute("src") === "img/check.svg") {
     item.previousElementSibling.classList.add("completed");
     item.setAttribute("src", "img/redo.svg");
+    let needElem = item.parentElement;
     checkedMaker(item.parentElement);
-    checkLocalTodo(item.previousElementSibling.innerText);
+    checkLocalTodo(needElem.innerText);
     if (item.classList.contains("fade-in-out")) {
       item.classList.replace("fade-in-out", "spinThat");
     } else {
@@ -242,7 +219,9 @@ taskBar.addEventListener("click", (e) => {
     removeCheckedTodo(item.parentElement.innerText);
     const checkChilds = checkSection.children;
     [...checkChilds].forEach((child) => {
-      if (child.innerText === item.parentElement.innerText) {
+      let needEleme = item.parentElement;
+      let needCh = child;
+      if (needCh.innerText === needEleme.innerText) {
         child.remove();
       }
       if (checkChilds.length === 0) {
@@ -259,7 +238,6 @@ taskBar.addEventListener("click", (e) => {
     }
   }
 });
-
 function checkedMaker(childElm) {
   const needElm = childElm;
   const newChecked = needElm.cloneNode(true);
@@ -276,7 +254,6 @@ function checkedMaker(childElm) {
     checkSection.insertBefore(newChecked, checkSection.firstChild);
   }
 }
-
 checkToggle.addEventListener("click", () => {
   checkToggle.textContent === "Checked Task"
     ? (checkToggle.textContent = "Add Task")
@@ -289,7 +266,6 @@ checkToggle.addEventListener("click", () => {
   burgers[1].classList.toggle("middle-rem");
   burgers[0].classList.toggle("top-bur");
   burgers[2].classList.toggle("bottom-bur");
-
   if (getComputedStyle(checkSection).display === "block") {
     //Check Active
     anime(animInit(animations.fadeOff, checkSection)).complete = () => {
@@ -326,7 +302,6 @@ checkToggle.addEventListener("click", () => {
     }
   }
 });
-
 remainToggle.addEventListener("click", () => {
   let toDefCounter = 0;
   remainToggle.textContent === "Remaining Task"
@@ -337,7 +312,6 @@ remainToggle.addEventListener("click", () => {
   burgers[0].classList.toggle("top-bur");
   burgers[2].classList.toggle("bottom-bur");
   anime(animInit(animations.leftIn, ".taskHead"));
-
   if (remainToggle.textContent === "Add Task") {
     if (!checkSection.classList.contains("display-none")) {
       anime(animInit(animations.fadeOff, checkSection)).complete = function () {
@@ -394,18 +368,15 @@ remainToggle.addEventListener("click", () => {
     document.querySelector(".taskHead").textContent = "To Do List";
   }
 });
-
 refreshBtn.addEventListener("click", () => {
   location.reload();
 });
-
 if (!checkSection.hasChildNodes()) {
   const newPara = document.createElement("p");
   const newContent = document.createTextNode("No Checked Task");
   newPara.appendChild(newContent);
   checkSection.appendChild(newPara);
 }
-
 checkToggle.addEventListener("click", () => {
   if (!checkSection.hasChildNodes()) {
     const newPara = document.createElement("p");
@@ -414,16 +385,13 @@ checkToggle.addEventListener("click", () => {
     checkSection.appendChild(newPara);
   }
 });
-
 hamBurger.addEventListener("click", () => {
   document.querySelector("#side-nav").classList.toggle("side-nav-showed");
   burgers[1].classList.toggle("middle-rem");
   burgers[0].classList.toggle("top-bur");
   burgers[2].classList.toggle("bottom-bur");
 });
-
 pageToggleBtn.addEventListener("click", togglePage);
-
 function togglePage() {
   if (
     aboutSection.style.display === "" ||
@@ -480,54 +448,35 @@ function togglePage() {
     anime(animInit(animations.GetIn, ".ham-burger"));
   }
 }
-
-<<<<<<< HEAD
-[...clipBoard].forEach(clipboard => {
-	clipboard.addEventListener("click", (e) => {
-		document.querySelector(".emptyTaskModal p").textContent = "Copied To Clipboard!";
-		modalSection.classList.remove("opHidden");
-		anime({
-		  targets: ".emptyTaskModal p",
-		  opacity: 0,
-		  duration: 0
-		});
-		anime(animInit(animations.modalIn,".emptyTaskModal p")).complete = function() {
-		  setTimeout(function() {
-		    anime({
-		      targets: ".emptyTaskModal p",
-		      duration: 500,
-		      keyframes: [
-          {translateY: 0, opacity: 1},
-          {translateY: "-2rem", opacity: 0}
-        ],
-        easing: "spring(1, 80, 10, 0)"
-    		}).complete = function() {
-    		  modalSection.classList.add("opHidden");
-    		};
-		  }, 1000);
-		};
-		const needLink = e.target.previousElementSibling.getAttribute("href");
-		const textarea = document.createElement("textarea");
-		const textareaChild = document.createTextNode(needLink);
-		textarea.appendChild(textareaChild);
-		document.body.appendChild(textarea);
-		textarea.classList.add("copy-text");
-		var copyTextarea = document.querySelector('.copy-text');
-  	copyTextarea.focus();
-  	copyTextarea.select();
-  	document.execCommand('copy');
-		document.body.removeChild(textarea);
-	});
-=======
 [...clipBoard].forEach((clipboard) => {
   clipboard.addEventListener("click", (e) => {
     document.querySelector(".emptyTaskModal p").textContent =
       "Copied To Clipboard!";
-    modalSection.classList.remove("modalAnimate");
-    modalSection.addEventListener("animationend", () => {
-      modalSection.classList.add("modalAnimate");
+    modalSection.classList.remove("opHidden");
+    anime({
+      targets: ".emptyTaskModal p",
+      opacity: 0,
+      duration: 0,
     });
-    const needLink = e.target.previousElementSibling.getAttribute("href");
+    anime(
+      animInit(animations.modalIn, ".emptyTaskModal p")
+    ).complete = function () {
+      setTimeout(function () {
+        anime({
+          targets: ".emptyTaskModal p",
+          duration: 500,
+          keyframes: [
+            { translateY: 0, opacity: 1 },
+            { translateY: "-2rem", opacity: 0 },
+          ],
+          easing: "spring(1, 80, 10, 0)",
+        }).complete = function () {
+          modalSection.classList.add("opHidden");
+        };
+      }, 1000);
+    };
+    const clipImg = e.target;
+    const needLink = clipImg.previousElementSibling.getAttribute("href");
     const textarea = document.createElement("textarea");
     const textareaChild = document.createTextNode(needLink);
     textarea.appendChild(textareaChild);
@@ -539,9 +488,7 @@ function togglePage() {
     document.execCommand("copy");
     document.body.removeChild(textarea);
   });
->>>>>>> be53783547cdff276a595c9287958dc9e9afc003
 });
-
 function saveLocalTodos(todo) {
   let todos;
   if (localStorage.getItem("todosMadeByYagnik") === null) {
@@ -549,12 +496,10 @@ function saveLocalTodos(todo) {
   } else {
     todos = JSON.parse(localStorage.getItem("todosMadeByYagnik"));
   }
-
   let needTodo = [todo];
   todos.push(needTodo);
   localStorage.setItem("todosMadeByYagnik", JSON.stringify(todos));
 }
-
 function getTodos() {
   let todos;
   if (localStorage.getItem("todosMadeByYagnik") === null) {
@@ -562,7 +507,6 @@ function getTodos() {
   } else {
     todos = JSON.parse(localStorage.getItem("todosMadeByYagnik"));
   }
-
   todos.forEach((todo) => {
     const newDiv = document.createElement("div");
     const newPara = document.createElement("p");
@@ -579,7 +523,6 @@ function getTodos() {
       newCheckBtn.setAttribute("src", "img/redo.svg");
       newCheckBtn.classList.add("spinThat");
     }
-
     const newContent = document.createTextNode(textInfo);
     const firstChild = taskBar.firstChild;
     newDiv.classList.add("task");
@@ -588,7 +531,6 @@ function getTodos() {
     newCloseBtn.classList.add("removed");
     newCloseBtn.classList.add("spinThat");
     newCloseBtn.setAttribute("src", "img/close.svg");
-
     newPara.appendChild(newContent);
     newDiv.appendChild(newPara);
     newDiv.appendChild(newCheckBtn);
@@ -600,7 +542,6 @@ function getTodos() {
     }
   });
 }
-
 function removeLocalTodos(todo) {
   let todos;
   if (localStorage.getItem("todosMadeByYagnik") === null) {
@@ -608,11 +549,9 @@ function removeLocalTodos(todo) {
   } else {
     todos = JSON.parse(localStorage.getItem("todosMadeByYagnik"));
   }
-
   todos.splice(todos.indexOf(todo), 1);
   localStorage.setItem("todosMadeByYagnik", JSON.stringify(todos));
 }
-
 function checkLocalTodo(todo) {
   let todos = JSON.parse(localStorage.getItem("todosMadeByYagnik"));
   let index;
@@ -630,7 +569,6 @@ function checkLocalTodo(todo) {
     }
   });
 }
-
 function getCheckedTodos() {
   let todos;
   if (localStorage.getItem("todosMadeByYagnik") === null) {
@@ -638,21 +576,16 @@ function getCheckedTodos() {
   } else {
     todos = JSON.parse(localStorage.getItem("todosMadeByYagnik"));
   }
-
   let checkedTodo;
   todos.forEach((todo) => {
     if (todo[1] === "completed") {
       checkedTodo = todo;
-
       const newDiv = document.createElement("div");
       const newPara = document.createElement("p");
       const newContent = document.createTextNode(checkedTodo[0]);
-
       newPara.style.textDecoration = "none";
       newPara.style.color = "#545454";
-
       newDiv.classList.add("centerWork");
-
       newPara.appendChild(newContent);
       newDiv.appendChild(newPara);
       if (checkSection.firstChild.textContent === "No Checked Task") {
@@ -664,7 +597,6 @@ function getCheckedTodos() {
     }
   });
 }
-
 function removeCheckedTodo(todo) {
   let todos = JSON.parse(localStorage.getItem("todosMadeByYagnik"));
   let index;
@@ -678,14 +610,12 @@ function removeCheckedTodo(todo) {
     }
   });
 }
-
 function animInit(obj, targetTags, Animdelay = 0) {
   let animObj = obj;
   animObj.targets = targetTags;
   animObj.delay = Animdelay;
   return animObj;
 }
-
 function initialAnim() {
   anime(animInit(animations.leftIn, "#logo img"));
   anime(animInit(animations.leftIn, ".taskHead"));

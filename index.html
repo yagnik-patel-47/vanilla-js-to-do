@@ -1,87 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="description" content="An awesome To-Do app made with JavaScript. This will also save your to-dos.">
-		<meta http-equiv="content-type" content="text/html" />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="./css/style.css" type="text/css"/>
-		<link rel="preconnect" href="https://fonts.gstatic.com">
-		<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap&family=Staatliches&display=swap" rel="stylesheet">
-		<link rel="icon" href="./img/favicon.png" type="image/png">
-		<link rel="preload" as="image" href="./img/logo.png" />
-		<title>To-Do</title>
-	</head>
-	<body>
-	  <div id="side-nav" class="side-nav-hidden">
-			<ul>
-				<li id="checkToggle">Checked Task</li>
-				<li id="remainToggle">Remaining Task</li>
-				<li id="refreshBtn">Refresh</li>
-			</ul>
-			<div class="forRecovery">
-				<p class="forRefresh">If any problem occurs, you can refresh.</p>
-				<p class="forVarDevice">Please resize your browser to mobile size for best experience.</p>
-		  </div>
-		</div>
-		<header>
-			<nav class="nav-bar">
-				<div class="ham-burger">
-					<div class="burger"></div>
-					<div class="burger"></div>
-					<div class="burger"></div>
-				</div>
-				<div class="about-link">
-					<button class="page-toggle">About</button>
-				</div>
-			</nav>
-		</header>
-		<section id="logo">
-			<img src="img/logo.png" alt="Logo" />
-			<div class="mainHead">
-			  <h1 class="userHead">Good Morning,<br/>User.</h1>
-			  <h1 class="developerHead">Developed By,<br />Yagnik Patel.</h1>
-			</div>
-		</section>
-		<section id="task-bar">
-			<h5 class="taskHead">To Do List</h5>
-			<div id="form" class="formStyle">
-				<label>
-					<input type="text" autocomplete="false" placeholder="Add new task..." class="input-box"/>
-				</label>
-				<button>Add</button>
-			</div>
-			<div class="tasks"></div>
-		</section>
-		<section class="emptyTaskModal opHidden">
-			<p>Cannot Add Empty Task!!!</p>
-		</section>
-		<section id="social-handles">
-			<h5 class="handles-head">Social Handles </h5>
-			<div class="handles">
-				<div class="handle">
-					<img src="img/instagram.svg" alt="Instagram" />
-					<a href="https://www.instagram.com/code_addicted_2021/">Click Here...</a>
-					<img class="share" src="img/clipboard.svg" alt="Share" />
-				</div>
-				<div class="handle">
-					<img src="img/twitter.svg" alt="Instagram" />
-					<a href="https://www.twitter.com/YagnikP26385066">Click Here...</a>
-					<img class="share" src="img/clipboard.svg" alt="Share" />
-				</div> 
-				<div class="handle">
-					<img src="img/github.svg" alt="Instagram" />
-					<a href="https://github.com/CodeAddicted0">Click Here...</a>
-					<img class="share" src="img/clipboard.svg" alt="Share" />
-				</div>
-			</div>
-			<footer class="thanks-footer">
-				<p>Thanks For Testing The App.</p>
-			</footer>
-		</section>
-		<section class="checkedToDo display-none"></section>
-		
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous"></script>
-		<script src="./js/main.js"></script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="An awesome To-Do app made with JavaScript. This will also save your to-dos."
+    />
+    <meta http-equiv="content-type" content="text/html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" type="text/css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik&display=swap&family=Staatliches&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"
+      integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q=="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="icon" href="./img/favicon.png" type="image/png" />
+    <link rel="preload" as="image" href="./img/logo.png" sizes="40vw" />
+    <title>To-Do</title>
+  </head>
+  <body>
+    <div id="side-nav" class="side-nav-hidden">
+      <ul>
+        <li id="checkToggle">Checked Task</li>
+        <li id="remainToggle">Remaining Task</li>
+        <li id="refreshBtn">Refresh</li>
+      </ul>
+      <div class="forRecovery">
+        <p class="forRefresh">If any problem occurs, you can refresh.</p>
+      </div>
+    </div>
+    <header>
+      <nav class="nav-bar">
+        <div class="ham-burger">
+          <div class="burger"></div>
+          <div class="burger"></div>
+          <div class="burger"></div>
+        </div>
+        <div class="about-link">
+          <button class="page-toggle">About</button>
+        </div>
+      </nav>
+    </header>
+    <section id="logo">
+      <img src="img/logo.png" alt="Logo" />
+      <div class="mainHead">
+        <h1 class="userHead">Good Morning,<br />User.</h1>
+        <h1 class="developerHead">Developed By,<br />Yagnik Patel.</h1>
+      </div>
+    </section>
+    <section id="task-bar">
+      <h5 class="taskHead">To Do List</h5>
+      <div id="form" class="formStyle">
+        <label>
+          <input
+            type="text"
+            autocomplete="false"
+            placeholder="Add new task..."
+            class="input-box"
+          />
+        </label>
+        <button>Add</button>
+      </div>
+      <div class="tasks"></div>
+    </section>
+    <section class="emptyTaskModal opHidden">
+      <p>Cannot Add Empty Task!!!</p>
+    </section>
+    <section id="social-handles">
+      <h5 class="handles-head">Social Handles</h5>
+      <div class="handles">
+        <div class="handle">
+          <img src="img/instagram.svg" alt="Instagram" />
+          <a href="https://www.instagram.com/code_addicted_2021/"
+            >Click Here...</a
+          >
+          <img class="share" src="img/clipboard.svg" alt="Share" />
+        </div>
+        <div class="handle">
+          <img src="img/twitter.svg" alt="Instagram" />
+          <a href="https://www.twitter.com/YagnikP26385066">Click Here...</a>
+          <img class="share" src="img/clipboard.svg" alt="Share" />
+        </div>
+        <div class="handle">
+          <img src="img/github.svg" alt="Instagram" />
+          <a href="https://github.com/CodeAddicted0">Click Here...</a>
+          <img class="share" src="img/clipboard.svg" alt="Share" />
+        </div>
+      </div>
+      <footer class="thanks-footer">
+        <p>Thanks For Testing The App.</p>
+      </footer>
+    </section>
+    <section class="checkedToDo display-none"></section>
+
+    <script src="./js/main.js"></script>
+  </body>
 </html>
