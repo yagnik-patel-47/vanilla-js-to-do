@@ -24,7 +24,7 @@ if ("serviceWorker" in navigator) {
 
 document.addEventListener("DOMContentLoaded", getTodos);
 document.addEventListener("DOMContentLoaded", getCheckedTodos);
-document.addEventListener("DOMContentLoaded", initialAnim);
+
 const animations = {
   leftIn: {
     targets: "#logo img",
@@ -615,16 +615,4 @@ function animInit(obj, targetTags, Animdelay = 0) {
   animObj.targets = targetTags;
   animObj.delay = Animdelay;
   return animObj;
-}
-function initialAnim() {
-  anime(animInit(animations.leftIn, "#logo img"));
-  anime(animInit(animations.leftIn, ".taskHead"));
-  anime(animInit(animations.leftIn, ".ham-burger"));
-  anime(animInit(animations.rightIn, ".page-toggle"));
-  anime(animInit(animations.rightIn, "#logo h1"));
-  setTimeout(function () {
-    anime(
-      animInit(animations.bottomIn, ["#form", ".task"], anime.stagger(200))
-    );
-  }, 0);
 }
