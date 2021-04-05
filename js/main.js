@@ -107,6 +107,7 @@ const animations = {
     easing: "spring(1, 80, 10, 0)",
   },
 };
+
 function createNode(parent) {
   const newDiv = document.createElement("div");
   const newPara = document.createElement("p");
@@ -136,7 +137,6 @@ function createNode(parent) {
   anime({
     targets: newDiv,
     translateY: ["2rem", 0],
-    rotateY: [45, 0],
     opacity: [0, 1],
     duration: 700,
     easing: "easeInOutExpo",
@@ -303,7 +303,6 @@ checkToggle.addEventListener("click", () => {
   }
 });
 remainToggle.addEventListener("click", () => {
-  let toDefCounter = 0;
   remainToggle.textContent === "Remaining Task"
     ? (remainToggle.textContent = "Add Task")
     : (remainToggle.textContent = "Remaining Task");
@@ -333,7 +332,6 @@ remainToggle.addEventListener("click", () => {
           child.style.display = "none";
         };
       } else if (!child.children[0].classList.contains("completed")) {
-        toDefCounter++;
         anime(animInit(animations.fadeIn, child, 400));
         child.addEventListener("click", (e) => {
           const targetE = e.target;
@@ -363,7 +361,9 @@ remainToggle.addEventListener("click", () => {
         anime(animInit(animations.fadeIn, child));
       };
     });
-    form.style.display = "grid";
+    setTimeout(function() {
+      form.style.display = "grid";
+    }, 400);
     anime(animInit(animations.fadeIn, form, 400));
     document.querySelector(".taskHead").textContent = "To Do List";
   }
