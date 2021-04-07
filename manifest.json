@@ -1,0 +1,30 @@
+{
+  "short_name": "To Do",
+  "name": "To Do",
+  "icons": [
+    {
+      "src": "/img/favicon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/index.html",
+  "background_color": "#0d47a1",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#fcfcfc",
+  "description": "To Do For Note Your Things",
+  "screenshots": [
+    {
+      "src": "/img/Screenshot_1.png",
+      "type": "image/png",
+      "sizes": "1050x1934"
+    },
+    {
+      "src": "/img/Screenshot_2.png",
+      "type": "image/png",
+      "sizes": "1050x1934"
+    }
+  ],
+  "prefer_related_applications": true
+}
