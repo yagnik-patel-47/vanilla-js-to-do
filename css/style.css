@@ -18,7 +18,7 @@ html {
 
 body {
   font-family: var(--rubik);
-  margin: 0 clamp(15rem, 18vw, 20rem);
+  margin: 0 clamp(15rem, 25vw, 25vw);
 }
 
 .nav-bar {
@@ -177,7 +177,7 @@ body {
 }
 
 #logo img {
-  width: 20vw;
+  width: 15vw;
   height: auto;
 }
 
@@ -427,12 +427,12 @@ label {
 }
 
 .handle img {
-  width: 4vw;
+  width: 2.5rem;
   height: auto;
 }
 
 .handle img:nth-child(3) {
-  width: 2vw;
+  width: 1.5rem;
   height: auto;
   justify-self: start;
   cursor: pointer;
@@ -454,10 +454,32 @@ label {
   color: #545454;
 }
 
-@media only screen and (max-width: 900px) {
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 23px;
+  }
+
+  body {
+    margin: 0 clamp(4rem, 10vw, 10vw);
+  }
+  #logo img {
+    width: 25vw;
+    height: auto;
+  }
+  .side-nav-hidden {
+    width: 60vw;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 18px;
+  }
+
   body {
     margin: 0;
   }
+
   #logo img {
     width: 40vw;
     height: auto;
